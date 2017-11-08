@@ -1,0 +1,16 @@
+services:
+    subscriber_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments: [ 'AppBundle\Entity\Subscriber' ]
+
+    app_mailchimp_subscriber_provider:
+        class: AppBundle\Service\SubscriberProvider
+        arguments: [ '@subscriber_repository' ]
+
+    mailchimp_fos_subscriber_provider:
+        class: Welp\MailchimpBundle\Provider\FosSubscriberProvider
+        arguments: [ '@fos_user.user_manager' ]
+    subscriber_service:
+        class: AppBundle\Service\SubscriberService
+        arguments: [ '@doctrine.orm.entity_manager', '@event_dispatcher' ]
